@@ -5,8 +5,10 @@ class Stock < ApplicationRecord
   def self.new_lookup(ticker_symbol)
     return unless ticker_symbol.is_a? String
 
+    # command: EDITOR="code --wait" rails credentials:edit to open up decrypted credentials
+    # file with vscode as the text editor
     client = IEX::Api::Client.new(
-      publishable_token: '',
+      publishable_token: Rails.application.credentials.iex_client[:sandbox_api_key],
       endpoint: 'https://sandbox.iexapis.com/v1'
     )
 
