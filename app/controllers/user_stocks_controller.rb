@@ -15,9 +15,12 @@ class UserStocksController < ApplicationController
 
   def destroy
     stock_id = params[:id]
-    stock = Stock.where(id: stock_id).first
-    UserStock.where(user_id: current_user.id, stock_id: stock_id).first.destroy
-    flash[:notice] = "Stock #{stock.name} was successfully untracked"
+    stock = Stock.find(stock_id)
+    user_stock = UserStock.where(user_id: current_user.id, stock_id: stock_id).first
+    user_stock.destroy
+    flash[:notice] = "Stock #{stock.ticker} was successfully untracked"
+    # Issue with redirecting is that we are adding to the browsers history a bunch
+    # of repetive pages - better is to have this functionality be an ajax request
     redirect_to my_portfolio_path
   end
 end
